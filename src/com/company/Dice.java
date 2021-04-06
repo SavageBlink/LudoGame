@@ -20,7 +20,6 @@ public class Dice {
     }
 
     public int roll(){
-        int r = (int) (Math.random()*nbFaces) + 1;
-        return r;
+        return (int) (Math.random()*nbFaces) + 1;
     }
 }

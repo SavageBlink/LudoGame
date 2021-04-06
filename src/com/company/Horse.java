@@ -38,8 +38,14 @@ public class Horse {
         this.relativePosition = relativePosition;
     }
 
+    public void addStep(int step){
+        this.relativePosition += step;
+    }
+
     public void flipSafe(){
         this.safe = !safe;
     }
+
+
 
 }

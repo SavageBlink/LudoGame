@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Player {
     Color color;
-    ArrayList<Horse> pawns = new ArrayList<Horse>();
+    ArrayList<Horse> pawns = new ArrayList<>();
     int homeCase;
 
     public Player(Color color){
@@ -44,5 +44,21 @@ public class Player {
 
     private void setPawns(ArrayList<Horse> pawns) {
         this.pawns = pawns;
+    }
+
+    public void movePawn(Horse h, int steps){
+        if(h.isSafe()){
+            h.flipSafe();
+        }
+        h.addStep(steps);
+    }
+
+    public void checkSafePosition(Horse h){
+        for(int i = 0;i<4;i++){
+            if(Board.starsPosition[i] == h.getRelativePosition() + this.homeCase || h.relativePosition == 0){
+                h.flipSafe();
+                break;
+            }
+        }
     }
 }
