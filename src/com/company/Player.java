@@ -3,9 +3,9 @@ package com.company;
 import java.util.ArrayList;
 
 public class Player {
-    Color color;
-    ArrayList<Horse> pawns = new ArrayList<>();
-    int homeCase;
+    private Color color;
+    private ArrayList<Horse> pawns = new ArrayList<>();
+    private int homeCase;
 
     public Player(Color color){
         this.color = color;
@@ -53,12 +53,21 @@ public class Player {
         h.addStep(steps);
     }
 
-    public void checkSafePosition(Horse h){
+    public void checkSafePosition(Horse h){ //Supposed to be lunched after each horse movement
         for(int i = 0;i<4;i++){
             if(Board.starsPosition[i] == h.getRelativePosition() + this.homeCase || h.relativePosition == 0){
                 h.flipSafe();
-                break;
+                return;
             }
         }
+    }
+
+    public ArrayList<Horse> getPlayablePawns(int dr,Dice d){
+        ArrayList<Horse> result = new ArrayList<>();
+        for (Horse h: this.getPawns()){
+            if ((h.relativePosition == -1 && dr == d.nbFaces ) || Board.freePath(h,dr)){
+                result.add(h);
+            }
+        }return result;
     }
 }
