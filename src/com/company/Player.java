@@ -14,10 +14,10 @@ public class Player {
             Horse current = new Horse(this.color,-1,i);
             pawns.add(current);
         }
-        this.homeCase = indentifyHomeCase(color);
+        this.homeCase = identifyHomeCase(color);
     }
 
-    public static int indentifyHomeCase(Color color) {
+    public static int identifyHomeCase(Color color) {
         int out = -1;
         switch (color){
             case RED -> out = 0;
