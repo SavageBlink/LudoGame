@@ -5,17 +5,24 @@ public class Horse {
     Color color;
     int relativePosition; // from -1 to 51,52-55, -1 : home, 52-55 : arrow
     int id;
+    boolean block;
     boolean safe;
 
     public Horse(Color color,int relativePosition,int id){
         this.color = color;
         this.relativePosition = relativePosition;
         this.safe = false;
+        this.block = false;
         this.id = id;
     }
 
     public Color getColor() {
         return color;
+    }
+
+    public int getAbsolutePosition() {
+
+        return relativePosition;
     }
 
     public int getRelativePosition() {

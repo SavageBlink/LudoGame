@@ -46,9 +46,7 @@ public class Board {
 
     public void turn(Player player) {
         int diceResult = d.roll();
-
-
-
-
     }
+
+    //public void Gameloop{return} //TODO
 }

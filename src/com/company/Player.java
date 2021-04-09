@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private Color color;
     private ArrayList<Horse> pawns = new ArrayList<>();
+    private ArrayList<Block> blocks = new ArrayList<>();
     private int homeCase;
 
     public Player(Color color){
@@ -13,13 +14,18 @@ public class Player {
             Horse current = new Horse(this.color,-1,i);
             pawns.add(current);
         }
+        this.homeCase = indentifyHomeCase(color);
+    }
 
-        switch (this.color){
-            case RED -> this.homeCase = 0;
-            case BLUE -> this.homeCase = 13;
-            case YELLOW -> this.homeCase = 26;
-            case GREEN ->  this.homeCase = 39;
+    public static int indentifyHomeCase(Color color) {
+        int out = -1;
+        switch (color){
+            case RED -> out = 0;
+            case BLUE -> out = 13;
+            case YELLOW -> out = 26;
+            case GREEN ->  out = 39;
         }
+        return out;
     }
 
     public Color getColor() {
@@ -53,7 +59,7 @@ public class Player {
         h.addStep(steps);
     }
 
-    public void checkSafePosition(Horse h){ //Supposed to be lunched after each horse movement
+    public void checkSafePosition(Horse h){ //Supposed to be lunched after each horse movement TODO blockthinggy?
         for(int i = 0;i<4;i++){
             if(Board.starsPosition[i] == h.getRelativePosition() + this.homeCase || h.relativePosition == 0){
                 h.flipSafe();
@@ -62,8 +68,9 @@ public class Player {
         }
     }
 
-    public ArrayList<Horse> getPlayablePawns(int dr,Dice d){
+    public ArrayList<Horse> getPlayablePawns(Dice d){ //TODO BLOCK THINGGY
         ArrayList<Horse> result = new ArrayList<>();
+        int dr = d.roll();
         for (Horse h: this.getPawns()){
             if ((h.relativePosition == -1 && dr == d.nbFaces ) || Board.freePath(h,dr)){
                 result.add(h);
