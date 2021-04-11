@@ -4,6 +4,7 @@ public class Horse {
 
     Color color;
     int relativePosition; // from -1 to 51,52-55, -1 : home, 52-55 : arrow
+    int absolutePosition;
     int id;
     int homeCase;
     private boolean safe;
@@ -22,11 +23,7 @@ public class Horse {
     }
 
     public int getAbsolutePosition() {
-        int absolutePosition = this.relativePosition + this.homeCase;
-        if( absolutePosition > 52){
-            absolutePosition -= 52;
-        }
-        return relativePosition;
+        return absolutePosition;
     }
 
     public int getRelativePosition() {
@@ -46,6 +43,10 @@ public class Horse {
     }
     public void setRelativePosition(int relativePosition){
         this.relativePosition = relativePosition;
+    }
+
+    public void setAbsolutePosition(int absolutePosition){
+        this.absolutePosition = absolutePosition;
     }
 
     public void addStep(int step){
