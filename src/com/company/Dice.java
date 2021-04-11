@@ -1,7 +1,7 @@
 package com.company;
 
 public class Dice {
-    int nbFaces;
+    private int nbFaces;
 
     public Dice(){
         this.nbFaces = 6;

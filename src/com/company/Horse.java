@@ -2,22 +2,23 @@ package com.company;
 
 public class Horse {
 
-    Color color;
-    int relativePosition; // from -1 to 51,52-55, -1 : home, 52-55 : arrow
-    int absolutePosition;
-    int id;
-    int homeCase;
+    private Color color;
+    private int relativePosition; // from -1 to 51,52-55, -1 : home, 52-56 : arrow
+    private int absolutePosition; // 0-51, negative might be the starting position
+    private final int id;
     private boolean safe;
 
 
-    public Horse(Color color,int relativePosition,int id){
+    public Horse(Color color,int relativePosition,int absolutePosition,int id){
         this.color = color;
         this.relativePosition = relativePosition;
+        this.absolutePosition = absolutePosition;
         this.safe = false;
         this.id = id;
-        this.homeCase = Player.identifyHomeCase(color);
     }
 
+
+    //Getter
     public Color getColor() {
         return color;
     }
@@ -26,17 +27,17 @@ public class Horse {
         return absolutePosition;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public int getRelativePosition() {
         return relativePosition;
     }
 
-    public boolean isSafe() {
-        return safe;
-    }
+    //setter
 
-    public int getId() {
-        return id;
-    }
+
 
     public void setColor(Color color){
         this.color = color;
@@ -49,16 +50,30 @@ public class Horse {
         this.absolutePosition = absolutePosition;
     }
 
+    //Modifier
     public void addStep(int step){
         this.relativePosition += step;
     }
 
-    public void flipSafe(){
-        this.safe = !safe;
+    public void setSafe(boolean safe){
+        this.safe = safe;
     }
+
+
+    //Checker
+
+    public boolean isSafe() {
+        return safe;
+    }
+
 
     public String toString(){
-        return "This is a " + this.color + "Horse ";
+        String output = "";
+        output+= "This is a " + this.color + " Horse\n";
+        output+= "It's the " + this.id + " horse\n";
+        output+= "He has traveled " + this.relativePosition + " so far\n";
+        output+= "He is on the " + this.absolutePosition + " Case\n";
+        output+= "Is he safe ?\n" +this.safe + "\n";
+        return  output;
     }
-
 }

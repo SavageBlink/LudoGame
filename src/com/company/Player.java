@@ -4,19 +4,54 @@ import java.util.ArrayList;
 
 public class Player {
     private Color color;
-    private ArrayList<Horse> pawns = new ArrayList<>();
-    private int homeCase;
+    private final ArrayList<Horse> Lhorse = new ArrayList<>();
+    private final int homeTile;
 
     public Player(Color color){
         this.color = color;
         for(int i = 0;i < 4;i++){
-            Horse current = new Horse(this.color,-1,i);
-            pawns.add(current);
+            Horse current = new Horse(this.color,-1,-1,i);
+            Lhorse.add(current);
         }
-        this.homeCase = identifyHomeCase(color);
+        this.homeTile = identifyHomeTile(color);
     }
 
-    public static int identifyHomeCase(Color color) {
+    //Getter
+
+    public Color getColor() {
+        return color;
+    }
+
+    public ArrayList<Horse> getLhorse() {
+        return Lhorse;
+    }
+
+    public int getHomeTile() {
+        return homeTile;
+    }
+
+    public ArrayList<Horse> getPlayableHorses(Dice d, int dr){ //TODO BLOCK THINGGY
+        ArrayList<Horse> result = new ArrayList<>();
+        for (Horse h: this.getLhorse()){
+            if ((h.getRelativePosition() == -1 && dr == d.getNbFaces() ) || Board.freePath(h,dr)){
+                result.add(h);
+            }
+        }return result;
+    }
+
+    //Setter
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    //Modifier
+    public void moveHorse(Horse h, int steps){
+        h.addStep(steps);
+    }
+
+
+
+    public static int identifyHomeTile(Color color) {
         int out = -1;
         switch (color){
             case RED -> out = 0;
@@ -27,52 +62,16 @@ public class Player {
         return out;
     }
 
-    public Color getColor() {
-        return color;
-    }
 
-    public ArrayList<Horse> getPawns() {
-        return pawns;
-    }
-
-    public int getHomeCase() {
-        return homeCase;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void setHomeCase(int homeCase) {
-        this.homeCase = homeCase;
-    }
-
-    private void setPawns(ArrayList<Horse> pawns) {
-        this.pawns = pawns;
-    }
-
-    public void movePawn(Horse h, int steps){
-        if(h.isSafe()){
-            h.flipSafe();
+    public String toString(){
+        String output = "";
+        output+= "This is the " + this.color + " Player\n";
+        output+= "It's home tile is " + this.homeTile + " Player\n";
+        output+= "Here's a display of it's Horses : \n";
+        for(Horse juan : this.Lhorse){
+            output+= juan.toString();
         }
-        h.addStep(steps);
+        return output;
     }
 
-    public void checkSafePosition(Horse h){ //Supposed to be lunched after each horse movement TODO blockthinggy?
-        for(int i = 0;i<4;i++){
-            if(Board.starsPosition[i] == h.getRelativePosition() + this.homeCase || h.relativePosition == 0){
-                h.flipSafe();
-                return;
-            }
-        }
-    }
-
-    public ArrayList<Horse> getPlayablePawns(Dice d, int dr){ //TODO BLOCK THINGGY
-        ArrayList<Horse> result = new ArrayList<>();
-        for (Horse h: this.getPawns()){
-            if ((h.relativePosition == -1 && dr == d.nbFaces ) || Board.freePath(h,dr)){
-                result.add(h);
-            }
-        }return result;
-    }
 }
