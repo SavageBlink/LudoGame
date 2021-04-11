@@ -6,15 +6,13 @@ public class Horse {
     int relativePosition; // from -1 to 51,52-55, -1 : home, 52-55 : arrow
     int id;
     int homeCase;
-    boolean block;
-    boolean safe;
+    private boolean safe;
 
 
     public Horse(Color color,int relativePosition,int id){
         this.color = color;
         this.relativePosition = relativePosition;
         this.safe = false;
-        this.block = false;
         this.id = id;
         this.homeCase = Player.identifyHomeCase(color);
     }
@@ -46,7 +44,6 @@ public class Horse {
     public void setColor(Color color){
         this.color = color;
     }
-
     public void setRelativePosition(int relativePosition){
         this.relativePosition = relativePosition;
     }
@@ -59,6 +56,8 @@ public class Horse {
         this.safe = !safe;
     }
 
-
+    public String toString(){
+        return "This is a " + this.color + "Horse ";
+    }
 
 }

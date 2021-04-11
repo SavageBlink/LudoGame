@@ -39,5 +39,9 @@ public class Main {
             int temp = Gameboad.getD().roll();
             System.out.println(temp);
         }
+
+        Horse test = new Horse(Color.BLUE,-1,2);
+
+        System.out.println(test);
     }
 }

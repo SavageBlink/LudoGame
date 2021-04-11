@@ -45,7 +45,20 @@ public class Board {
     }
 
     public void turn(Player player) {
+        System.out.println("It's "+ player.getColor() + " Turn");
         int diceResult = d.roll();
+        System.out.println("You rolled a" + diceResult);
+        ArrayList <Horse> playableHorse = player.getPlayablePawns(this.d,diceResult);
+        System.out.println("Vous pouvez ainsi jouer :");
+
+        for (Horse h : playableHorse){
+            h.toString();
+        }
+
+
+        //TODO userSelection
+
+        //if()
     }
 
     //public void Gameloop{return} //TODO

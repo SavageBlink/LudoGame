@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Player {
     private Color color;
     private ArrayList<Horse> pawns = new ArrayList<>();
-    private ArrayList<Block> blocks = new ArrayList<>();
     private int homeCase;
 
     public Player(Color color){
@@ -68,9 +67,8 @@ public class Player {
         }
     }
 
-    public ArrayList<Horse> getPlayablePawns(Dice d){ //TODO BLOCK THINGGY
+    public ArrayList<Horse> getPlayablePawns(Dice d, int dr){ //TODO BLOCK THINGGY
         ArrayList<Horse> result = new ArrayList<>();
-        int dr = d.roll();
         for (Horse h: this.getPawns()){
             if ((h.relativePosition == -1 && dr == d.nbFaces ) || Board.freePath(h,dr)){
                 result.add(h);
