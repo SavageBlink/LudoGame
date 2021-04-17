@@ -41,7 +41,7 @@ public class Tile {
     public String toString(){
         String output ="the tile is safe ?\n" + this.safe +"\n";
         for (Horse h : this.content){
-             output+= h.toString();
+             output += h.toString();
         }
         return output;
     }

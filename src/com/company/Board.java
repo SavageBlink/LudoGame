@@ -64,6 +64,8 @@ public class Board {
         }
     }
 
+
+
     //setter
 
     public void setD(Dice d) {
@@ -71,10 +73,46 @@ public class Board {
     }
 
     //Gamelogic
+
+    public static void clearTile(Tile t){
+        for(Horse juan : t.getContent()){
+            t.yeetHorse(juan);
+            juan.setAbsolutePosition(-1);
+        }
+    }
+
     public static boolean freePath(Horse h, int dr){
 
-        return true; //TODO
+        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        int nextTilePos = h.getAbsolutePosition() + dr;
+        Tile nextTile = tiles.get(nextTilePos);
+        boolean result = true;
+
+        if(currentTile.getSize() == 1){
+            if (nextTile.getSize() == 2 || nextTile.isSafe()){
+                result = false;
+            }
+        }
+        return result;
     }
+
+    /*
+
+    nextTilePos = (dr%2 == 0) ? dr/2 : dr;
+       moving pieces
+    if(dr%2 == 0){
+
+                clearTile(nextTile);
+
+                for (Horse juan : currentTile.getContent()){
+                    nextTile.addHorse(juan);
+                    currentTile.yeetHorse(juan);
+                    juan.setAbsolutePosition(nextTilePos);
+                }
+            }else {
+
+            }
+     */
 
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
