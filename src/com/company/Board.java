@@ -89,8 +89,13 @@ public class Board {
         boolean result = true;
 
         if(currentTile.getSize() == 1){
-            if (nextTile.getSize() == 2 || nextTile.isSafe()){
-                result = false;
+            for(int i = h.getAbsolutePosition()+1; i <= h.getAbsolutePosition() + dr; i++){
+                Tile temporaryTile = tiles.get(i);
+                Horse h1 = temporaryTile.getContent().get(0);
+                Horse h2 = temporaryTile.getContent().get(1);
+                if(temporaryTile.getSize() == 2 && (h1.getColor() != h2.getColor())){
+                    result = false;
+                }
             }
         }
         return result;
