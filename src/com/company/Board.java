@@ -2,6 +2,7 @@ package com.company;
 
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
 
@@ -22,8 +23,6 @@ public class Board {
         for(int i = 0;i<52;i++){
             tiles.add(new Tile());
         }
-
-
         // setting safe tiles
         tiles.get(0).setSafe(true);
         tiles.get(8).setSafe(true);
@@ -100,7 +99,7 @@ public class Board {
         Tile nextTile;
         if (freePath(h, dr)) {
 
-            if (currentTile.getContent().size() == 2) {
+            if (currentTile.getNumberOfHorseOfColor(h.getColor()) == 2) {
                 int modDr = (dr % 2 == 0) ? dr / 2 : dr;
                 nextTilePos = modDr + h.getAbsolutePosition();
                 nextTile = tiles.get(nextTilePos);
@@ -146,7 +145,7 @@ public class Board {
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
         int diceResult = d.roll();
-        System.out.println("You rolled a" + diceResult);
+        System.out.println("You rolled a " + diceResult);
         ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
         System.out.println("Vous pouvez ainsi jouer :");
 
@@ -154,6 +153,11 @@ public class Board {
             h.toString();
         }
 
+        Scanner sc = new Scanner(System.in);
+
+        String name = sc.nextLine();
+
+        System.out.println(name);
 
         //TODO userSelection
 

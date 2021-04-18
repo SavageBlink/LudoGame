@@ -7,6 +7,8 @@ public class Main {
     public static void main(String[] args) {
         Board Gameboard = new Board(6);
 
+        Player player = Gameboard.getPlayers().get(0);
+
         Horse juan = Gameboard.getPlayers().get(0).getLhorse().get(0);
         Horse juan2 = Gameboard.getPlayers().get(0).getLhorse().get(2);
         juan.setRelativePosition(0);
@@ -22,7 +24,7 @@ public class Main {
         for (Player kevin: Gameboard.getPlayers()) {
             System.out.println(kevin);
         }
-
+         Gameboard.turn(player);
 
     }
 }

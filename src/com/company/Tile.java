@@ -51,4 +51,12 @@ public class Tile {
         }
         return output;
     }
+
+    public int getNumberOfHorseOfColor(Color color){
+        int i = 0;
+        for (Horse h : this.getContent()){
+            i = (h.getColor() == color) ? i+1 : i ;
+        }return  i;
+    }
+
 }
