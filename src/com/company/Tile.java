@@ -26,6 +26,12 @@ public class Tile {
         this.content.remove(juan);
     }
 
+    public void clearContent(){
+        for(Horse juan : this.content){
+            this.yeetHorse(juan);
+        }
+    }
+
     public int getSize(){
         return this.content.size();
     }

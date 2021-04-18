@@ -72,24 +72,17 @@ public class Board {
         this.d = d;
     }
 
-    //Gamelogic
+    //Game logic
 
-    public static void clearTile(Tile t){
-        for(Horse juan : t.getContent()){
-            t.yeetHorse(juan);
-            juan.setAbsolutePosition(-1);
-        }
-    }
 
     public static boolean freePath(Horse h, int dr){
 
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos = h.getAbsolutePosition() + dr;
-        Tile nextTile = tiles.get(nextTilePos);
         boolean result = true;
 
         if(currentTile.getSize() == 1){
-            for(int i = h.getAbsolutePosition()+1; i <= h.getAbsolutePosition() + dr; i++){
+            for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
                 Tile temporaryTile = tiles.get(i);
                 Horse h1 = temporaryTile.getContent().get(0);
                 Horse h2 = temporaryTile.getContent().get(1);
@@ -101,6 +94,37 @@ public class Board {
         return result;
     }
 
+    public void moveHorse(Horse h, int dr) {
+        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        int nextTilePos;
+        Tile nextTile;
+        if (freePath(h, dr)) {
+
+            if (currentTile.getContent().size() == 2) {
+                int modDr = (dr % 2 == 0) ? dr / 2 : dr;
+                nextTilePos = modDr + h.getAbsolutePosition();
+                nextTile = tiles.get(nextTilePos);
+                nextTile.clearContent();
+
+                for (int i = 0; i < 2 - (dr % 2); i++) {
+                    Horse tempHorse = currentTile.getContent().get(i);
+                    nextTile.addHorse(tempHorse);
+                    currentTile.yeetHorse(tempHorse);
+                    tempHorse.setAbsolutePosition(nextTilePos);
+                    tempHorse.addStep(modDr);
+                }
+
+            } else {
+                nextTilePos = h.getAbsolutePosition() + dr;
+                nextTile = tiles.get(nextTilePos);
+
+                nextTile.addHorse(h);
+                currentTile.yeetHorse(h);
+                h.setAbsolutePosition(nextTilePos);
+                h.addStep(dr);
+            }
+        }
+    }
     /*
 
     nextTilePos = (dr%2 == 0) ? dr/2 : dr;
