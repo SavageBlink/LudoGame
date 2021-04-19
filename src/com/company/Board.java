@@ -75,7 +75,7 @@ public class Board {
 
 
     public static boolean freePath(Horse h, int dr){
-
+        //the block case is basically handled because according to the rules it can always move on a tile
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos = h.getAbsolutePosition() + dr;
         boolean result = true;
@@ -93,11 +93,74 @@ public class Board {
         return result;
     }
 
+    public void translateBlock(Horse h,int dr){
+        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        int nextTilePos;
+        Tile nextTile;
+
+        int modDr = (dr % 2 == 0) ? dr / 2 : dr;
+        nextTilePos = modDr + h.getAbsolutePosition();
+        nextTile = tiles.get(nextTilePos);
+        nextTile.clearContent();
+
+        for (int i = 0; i < 2 - (dr % 2); i++) {
+
+            Horse tempHorse = currentTile.getContent().get(i);
+            nextTile.addHorse(tempHorse);
+            currentTile.yeetHorse(tempHorse);
+            tempHorse.setAbsolutePosition(nextTilePos);
+            tempHorse.addStep(modDr);
+        }
+    }
+
+    public void translateHorse(Horse h,int dr){
+        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        int nextTilePos;
+        Tile nextTile;
+
+        nextTilePos = h.getAbsolutePosition() + dr;
+        nextTile = tiles.get(nextTilePos);
+
+        nextTile.addHorse(h);
+        currentTile.yeetHorse(h);
+        h.setAbsolutePosition(nextTilePos);
+        h.addStep(dr);
+
+    }
+
     public void moveHorse(Horse h, int dr) {
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos;
         Tile nextTile;
-        if (freePath(h, dr)) {
+
+
+        if(freePath(h,dr)){
+            if (currentTile.isSafe()){
+                if(currentTile.getNumberOfHorseOfColor(h.getColor()) > 1){
+
+                    int modDr = (dr % 2 == 0) ? dr / 2 : dr;
+                    boolean parity = dr % 2 == 0;
+                    translateHorse(h,modDr);
+                    if(!parity){
+                        for (Horse tempHorse : currentTile.getContent()){
+                            if(tempHorse.getColor() == h.getColor()){
+                                translateHorse(tempHorse,modDr);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }else if (currentTile.getSize() == 2){
+                translateBlock(h,dr);
+            }else {
+                translateHorse(h,dr);
+            }
+        }
+
+    }
+    /*
+    if (freePath(h, dr)) {
 
             if (currentTile.getNumberOfHorseOfColor(h.getColor()) == 2) {
                 int modDr = (dr % 2 == 0) ? dr / 2 : dr;
@@ -123,23 +186,7 @@ public class Board {
                 h.addStep(dr);
             }
         }
-    }
-    /*
 
-    nextTilePos = (dr%2 == 0) ? dr/2 : dr;
-       moving pieces
-    if(dr%2 == 0){
-
-                clearTile(nextTile);
-
-                for (Horse juan : currentTile.getContent()){
-                    nextTile.addHorse(juan);
-                    currentTile.yeetHorse(juan);
-                    juan.setAbsolutePosition(nextTilePos);
-                }
-            }else {
-
-            }
      */
 
     public void turn(Player player) {
