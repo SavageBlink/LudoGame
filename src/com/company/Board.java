@@ -95,21 +95,16 @@ public class Board {
 
     public void translateBlock(Horse h,int dr){
         Tile currentTile = tiles.get(h.getAbsolutePosition());
-        int nextTilePos;
-        Tile nextTile;
 
         int modDr = (dr % 2 == 0) ? dr / 2 : dr;
-        nextTilePos = modDr + h.getAbsolutePosition();
-        nextTile = tiles.get(nextTilePos);
-        nextTile.clearContent();
-
-        for (int i = 0; i < 2 - (dr % 2); i++) {
-
-            Horse tempHorse = currentTile.getContent().get(i);
-            nextTile.addHorse(tempHorse);
-            currentTile.yeetHorse(tempHorse);
-            tempHorse.setAbsolutePosition(nextTilePos);
-            tempHorse.addStep(modDr);
+        this.translateHorse(h,modDr);
+        if(dr % 2 == 0){
+            for (Horse tempHorse : currentTile.getContent()){
+                if(tempHorse.getColor() == h.getColor()){
+                    this.translateHorse(tempHorse,modDr);
+                    break;
+                }
+            }
         }
     }
 
@@ -125,6 +120,7 @@ public class Board {
         currentTile.yeetHorse(h);
         h.setAbsolutePosition(nextTilePos);
         h.addStep(dr);
+        //TODO yeet juaans on next tile
 
     }
 
@@ -141,7 +137,7 @@ public class Board {
                     int modDr = (dr % 2 == 0) ? dr / 2 : dr;
                     boolean parity = dr % 2 == 0;
                     translateHorse(h,modDr);
-                    if(!parity){
+                    if(parity){
                         for (Horse tempHorse : currentTile.getContent()){
                             if(tempHorse.getColor() == h.getColor()){
                                 translateHorse(tempHorse,modDr);
