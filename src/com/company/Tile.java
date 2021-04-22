@@ -19,7 +19,6 @@ public class Tile {
 
     public void addHorse(Horse juan){
             this.content.add(juan);
-            //juan.setSafe(this.safe);
     }
 
     public void yeetHorse(Horse juan){
@@ -28,9 +27,12 @@ public class Tile {
 
     public void clearContent(Color color){
         if(!this.isSafe()){
-            for(Horse juan : this.content){
-                if(juan.getColor() != color){
-                    this.yeetHorse(juan);
+            for(int i = 0; i < this.getContent().size();i++){
+                Horse tempHrose = this.getContent().get(i);
+                if(tempHrose.getColor() != color){
+                    tempHrose.setRelativePosition(-1);
+                    tempHrose.setAbsolutePosition(-1);
+                    this.yeetHorse(tempHrose);
                 }
             }
         }

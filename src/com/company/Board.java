@@ -88,8 +88,8 @@ public class Board {
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
         boolean result = true;
-
-        if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1){
+        //TODO discuter du fix avec driss (SI jamais je dors en gros lorsque tu block mais un dr impair il pouvait se déplacer comme un block alors qu'il break)
+        if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1 || (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1 && dr % 2 != 0)){
             for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
                 Tile temporaryTile = tiles.get(i);
                 if(temporaryTile.isThereBlock()){
@@ -102,7 +102,7 @@ public class Board {
 
     public void translateBlock(Horse h,int dr){
         //Initialisation
-        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        Tile currentTile = getTiles(h.getAbsolutePosition());
 
         int modDr = (dr % 2 == 0) ? dr / 2 : dr;
         this.translateHorse(h,modDr);
@@ -117,12 +117,12 @@ public class Board {
     }
 
     public void translateHorse(Horse h,int dr){
-        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        Tile currentTile = getTiles(h.getAbsolutePosition());
         int nextTilePos;
         Tile nextTile;
 
         nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
-        nextTile = tiles.get(nextTilePos);
+        nextTile = getTiles(nextTilePos);
 
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
@@ -137,6 +137,7 @@ public class Board {
             int startingTileIndex = getPlayer(h.getColor()).getHomeTile();
             Tile startingTile = getTiles(startingTileIndex);
             startingTile.addHorse(h);
+            h.setAbsolutePosition(startingTileIndex);
             h.setRelativePosition(0);
         }else { //Otherwise move it normally
             Tile currentTile = getTiles(h.getAbsolutePosition());
@@ -152,25 +153,29 @@ public class Board {
 
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
-        int diceResult = getD().roll();
+        int diceResult = 1;
         System.out.println("You rolled a " + diceResult);
         ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
         System.out.println("Vous pouvez ainsi jouer :");
-        int n = 0;
-        for (Horse h : playableHorse){
 
-            System.out.println(n);
-            System.out.println(h.toString());
-            n++;
+
+        if(playableHorse.size() != 0) {
+            int n = 0;
+            //play the user turn
+            for (Horse h : playableHorse) {
+                System.out.println(n);
+                System.out.println(h.toString());
+                n++;
+            }
+            Scanner sc = new Scanner(System.in);
+
+            String input = sc.nextLine();
+            int id = Integer.parseInt(input);
+
+            moveHorse(playableHorse.get(id), diceResult);
+        }else{
+            System.out.println("You have no horse to move, passing turn");
         }
-
-        Scanner sc = new Scanner(System.in);
-
-        String input = sc.nextLine();
-        int id = Integer.parseInt(input);
-
-        moveHorse(playableHorse.get(id),diceResult);
-
         //TODO userSelection
 
         //if()

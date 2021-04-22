@@ -16,6 +16,23 @@ public class Main {
             juan2.setRelativePosition(0);
         }
 
+        Player blocker = GameBoard.getPlayer(Color.BLUE);
+        Player redPlayer = GameBoard.getPlayer(Color.RED);
+        Horse juan1 = blocker.getLhorse().get(0);
+        Horse juan2 = blocker.getLhorse().get(1);
+        Horse redHorse = redPlayer.getLhorse().get(1);
+        Tile blockTile = GameBoard.getTiles(1);
+        Tile zeroTile = GameBoard.getTiles(0);
+
+        redHorse.setAbsolutePosition(0);
+        redHorse.setRelativePosition(0);
+        juan1.setAbsolutePosition(1);
+        juan2.setAbsolutePosition(1);
+        blockTile.addHorse(juan1);
+        blockTile.addHorse(juan2);
+        zeroTile.addHorse(redHorse);
+
+
         for(int i = 0; i<11;i++){
             for (Player kevin : GameBoard.getPlayers()) {
                 System.out.println(kevin);
