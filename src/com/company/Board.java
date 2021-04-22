@@ -80,12 +80,12 @@ public class Board {
         int nextTilePos = h.getAbsolutePosition() + dr;
         boolean result = true;
 
-        if(currentTile.getSize() == 1){
+        if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1){
             for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
                 Tile temporaryTile = tiles.get(i);
                 Horse h1 = temporaryTile.getContent().get(0);
                 Horse h2 = temporaryTile.getContent().get(1);
-                if(temporaryTile.getSize() == 2 && (h1.getColor() != h2.getColor())){
+                if(temporaryTile.getSize() == 2 && (h1.getColor() == h2.getColor())){
                     result = false;
                 }
             }
@@ -193,7 +193,7 @@ public class Board {
         System.out.println("Vous pouvez ainsi jouer :");
 
         for (Horse h : playableHorse){
-            h.toString();
+            System.out.println(h.toString());
         }
 
         Scanner sc = new Scanner(System.in);
