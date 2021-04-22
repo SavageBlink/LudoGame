@@ -18,13 +18,11 @@ public class Main {
         System.out.println(brazil);
 
 
-
         System.out.println("###################\n");
 
-        for (Player kevin: Gameboard.getPlayers()) {
+        for (Player kevin : Gameboard.getPlayers()) {
             System.out.println(kevin);
+            Gameboard.turn(kevin);
         }
-         Gameboard.turn(player);
-
     }
 }

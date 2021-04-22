@@ -6,7 +6,7 @@ public class Horse {
     private int relativePosition; // from -1 to 51,52-55, -1 : home, 52-56 : arrow
     private int absolutePosition; // 0-51, negative might be the starting position
     private final int id;
-    private boolean safe;
+    //private boolean safe;
 
 
     public Horse(Color color,int relativePosition,int absolutePosition,int id){

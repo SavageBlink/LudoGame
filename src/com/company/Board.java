@@ -38,12 +38,9 @@ public class Board {
 
     private static ArrayList<Player> generatePlayers(){
         ArrayList<Player> players = new ArrayList<>();
-
-        players.add(new Player(Color.RED));
-        players.add(new Player(Color.BLUE));
-        players.add(new Player(Color.YELLOW));
-        players.add(new Player(Color.RED));
-
+        for (Color c: Color.values()) {
+            players.add(new Player(c));
+        }
         return players;
     }
 
@@ -75,6 +72,9 @@ public class Board {
 
 
     public static boolean freePath(Horse h, int dr){
+        if (h.getAbsolutePosition() == -1){
+            return  false;
+        }
         //the block case is basically handled because according to the rules it can always move on a tile
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos = h.getAbsolutePosition() + dr;
@@ -83,9 +83,7 @@ public class Board {
         if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1){
             for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
                 Tile temporaryTile = tiles.get(i);
-                Horse h1 = temporaryTile.getContent().get(0);
-                Horse h2 = temporaryTile.getContent().get(1);
-                if(temporaryTile.getSize() == 2 && (h1.getColor() == h2.getColor())){
+                if(temporaryTile.isThereBlock()){
                     result = false;
                 }
             }
@@ -94,6 +92,7 @@ public class Board {
     }
 
     public void translateBlock(Horse h,int dr){
+        //Initialisation
         Tile currentTile = tiles.get(h.getAbsolutePosition());
 
         int modDr = (dr % 2 == 0) ? dr / 2 : dr;
@@ -138,20 +137,23 @@ public class Board {
 
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
-        int diceResult = d.roll();
+        int diceResult = 6;
         System.out.println("You rolled a " + diceResult);
         ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
         System.out.println("Vous pouvez ainsi jouer :");
-
+        int n = 0;
         for (Horse h : playableHorse){
+
+            System.out.println(n);
             System.out.println(h.toString());
+            n++;
         }
 
         Scanner sc = new Scanner(System.in);
 
-        String name = sc.nextLine();
+        String id = sc.nextLine();
 
-        System.out.println(name);
+        System.out.println(id);
 
         //TODO userSelection
 

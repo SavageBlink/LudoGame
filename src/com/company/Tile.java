@@ -63,4 +63,15 @@ public class Tile {
         }return  i;
     }
 
+
+    public boolean isThereBlock(){
+        boolean out =false;
+        for (Color c : Color.values()){
+            if (this.getNumberOfHorseOfColor(c) >= 2){
+                out = true;
+            }
+        }
+        return out;
+    }
+
 }

@@ -33,7 +33,7 @@ public class Player {
     public ArrayList<Horse> getPlayableHorses(Dice d, int dr){ //TODO BLOCK THINGGY
         ArrayList<Horse> result = new ArrayList<>();
         for (Horse h: this.getLhorse()){
-            if ((h.getRelativePosition() == -1 && dr == d.getNbFaces() ) || Board.freePath(h,dr)){
+            if ( (h.getRelativePosition() == -1 && dr == d.getNbFaces()) || Board.freePath(h,dr)){
                 result.add(h);
             }
         }return result;
