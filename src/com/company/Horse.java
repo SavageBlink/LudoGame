@@ -13,7 +13,7 @@ public class Horse {
         this.color = color;
         this.relativePosition = relativePosition;
         this.absolutePosition = absolutePosition;
-        this.safe = false;
+        //this.safe = false;
         this.id = id;
     }
 
@@ -55,16 +55,12 @@ public class Horse {
         this.relativePosition += step;
     }
 
-    public void setSafe(boolean safe){
-        this.safe = safe;
-    }
+    //public void setSafe(boolean safe){ this.safe = safe; }
 
 
     //Checker
 
-    public boolean isSafe() {
-        return safe;
-    }
+    //public boolean isSafe() {return safe;}
 
 
     public String toString(){
@@ -73,7 +69,7 @@ public class Horse {
         output+= "It's the " + this.id + " horse\n";
         output+= "He has traveled " + this.relativePosition + " so far\n";
         output+= "He is on the " + this.absolutePosition + " Case\n";
-        output+= "Is he safe ?\n" +this.safe + "\n";
+        //output+= "Is he safe ?\n" +this.safe + "\n";
         return  output;
     }
 }

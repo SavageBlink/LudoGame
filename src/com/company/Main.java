@@ -11,7 +11,7 @@ public class Main {
 
         Horse juan = Gameboard.getPlayers().get(0).getLhorse().get(0);
         Horse juan2 = Gameboard.getPlayers().get(0).getLhorse().get(2);
-        juan.setRelativePosition(0);
+
         Tile brazil = Gameboard.getCase(0);
         brazil.addHorse(juan);
         brazil.addHorse(juan2);

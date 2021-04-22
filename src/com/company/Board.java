@@ -126,33 +126,13 @@ public class Board {
 
     public void moveHorse(Horse h, int dr) {
         Tile currentTile = tiles.get(h.getAbsolutePosition());
-        int nextTilePos;
-        Tile nextTile;
 
-
-        if(freePath(h,dr)){
-            if (currentTile.isSafe()){
-                if(currentTile.getNumberOfHorseOfColor(h.getColor()) > 1){
-
-                    int modDr = (dr % 2 == 0) ? dr / 2 : dr;
-                    boolean parity = dr % 2 == 0;
-                    translateHorse(h,modDr);
-                    if(parity){
-                        for (Horse tempHorse : currentTile.getContent()){
-                            if(tempHorse.getColor() == h.getColor()){
-                                translateHorse(tempHorse,modDr);
-                                break;
-                            }
-                        }
-                    }
-
-                }
-            }else if (currentTile.getSize() == 2){
-                translateBlock(h,dr);
-            }else {
-                translateHorse(h,dr);
-            }
+        if(currentTile.getNumberOfHorseOfColor(h.getColor()) > 1){
+            translateBlock(h,dr);
+        }else{
+            translateHorse(h,dr);
         }
+
 
     }
 

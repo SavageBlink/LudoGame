@@ -19,7 +19,7 @@ public class Tile {
 
     public void addHorse(Horse juan){
             this.content.add(juan);
-            juan.setSafe(this.safe);
+            //juan.setSafe(this.safe);
     }
 
     public void yeetHorse(Horse juan){
