@@ -115,12 +115,17 @@ public class Board {
 
         nextTilePos = h.getAbsolutePosition() + dr;
         nextTile = tiles.get(nextTilePos);
+        Horse juan = nextTile.getContent().get(0);
+        if(juan.getColor() != h.getColor()){
+            nextTile.yeetHorse(juan);
+            juan.setAbsolutePosition(-1);
+            juan.setRelativePosition(0);
+        }
 
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
         h.setAbsolutePosition(nextTilePos);
         h.addStep(dr);
-        //TODO yeet juaans on next tile
 
     }
 
@@ -155,35 +160,6 @@ public class Board {
         }
 
     }
-    /*
-    if (freePath(h, dr)) {
-
-            if (currentTile.getNumberOfHorseOfColor(h.getColor()) == 2) {
-                int modDr = (dr % 2 == 0) ? dr / 2 : dr;
-                nextTilePos = modDr + h.getAbsolutePosition();
-                nextTile = tiles.get(nextTilePos);
-                nextTile.clearContent();
-
-                for (int i = 0; i < 2 - (dr % 2); i++) {
-                    Horse tempHorse = currentTile.getContent().get(i);
-                    nextTile.addHorse(tempHorse);
-                    currentTile.yeetHorse(tempHorse);
-                    tempHorse.setAbsolutePosition(nextTilePos);
-                    tempHorse.addStep(modDr);
-                }
-
-            } else {
-                nextTilePos = h.getAbsolutePosition() + dr;
-                nextTile = tiles.get(nextTilePos);
-
-                nextTile.addHorse(h);
-                currentTile.yeetHorse(h);
-                h.setAbsolutePosition(nextTilePos);
-                h.addStep(dr);
-            }
-        }
-
-     */
 
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
