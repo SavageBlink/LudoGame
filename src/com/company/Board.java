@@ -86,7 +86,7 @@ public class Board {
         }
         //the block case is basically handled because according to the rules it can always move on a tile
         Tile currentTile = tiles.get(h.getAbsolutePosition());
-        int nextTilePos = h.getAbsolutePosition() + dr;
+        int nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
         boolean result = true;
 
         if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1){
@@ -121,7 +121,7 @@ public class Board {
         int nextTilePos;
         Tile nextTile;
 
-        nextTilePos = h.getAbsolutePosition() + dr;
+        nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
         nextTile = tiles.get(nextTilePos);
 
         nextTile.addHorse(h);

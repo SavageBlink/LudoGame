@@ -5,7 +5,7 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        Board Gameboard = new Board(6);
+        Board GameBoard = new Board(6);
 
 
         for(Player p : GameBoard.getPlayers()){
