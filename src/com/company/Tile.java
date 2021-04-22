@@ -26,9 +26,13 @@ public class Tile {
         this.content.remove(juan);
     }
 
-    public void clearContent(){
-        for(Horse juan : this.content){
-            this.yeetHorse(juan);
+    public void clearContent(Color color){
+        if(!this.isSafe()){
+            for(Horse juan : this.content){
+                if(juan.getColor() != color){
+                    this.yeetHorse(juan);
+                }
+            }
         }
     }
 
