@@ -138,7 +138,7 @@ public class Board {
             Tile startingTile = getTiles(startingTileIndex);
             startingTile.addHorse(h);
             h.setRelativePosition(0);
-        }else { //Otherwise move it normaly
+        }else { //Otherwise move it normally
             Tile currentTile = getTiles(h.getAbsolutePosition());
 
             if (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1) {
