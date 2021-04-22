@@ -115,8 +115,6 @@ public class Board {
 
         nextTilePos = h.getAbsolutePosition() + dr;
         nextTile = tiles.get(nextTilePos);
-        Horse juan = nextTile.getContent().get(0);
-
 
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
