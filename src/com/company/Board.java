@@ -116,17 +116,14 @@ public class Board {
         nextTilePos = h.getAbsolutePosition() + dr;
         nextTile = tiles.get(nextTilePos);
         Horse juan = nextTile.getContent().get(0);
-        if(juan.getColor() != h.getColor()){
-            nextTile.yeetHorse(juan);
-            juan.setAbsolutePosition(-1);
-            juan.setRelativePosition(0);
-        }
+
 
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
         h.setAbsolutePosition(nextTilePos);
         h.addStep(dr);
 
+        nextTile.clearContent(h.getColor());
     }
 
     public void moveHorse(Horse h, int dr) {
