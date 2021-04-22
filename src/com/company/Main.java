@@ -7,22 +7,20 @@ public class Main {
     public static void main(String[] args) {
         Board Gameboard = new Board(6);
 
-        Player player = Gameboard.getPlayers().get(0);
 
-        Horse juan = Gameboard.getPlayers().get(0).getLhorse().get(0);
-        Horse juan2 = Gameboard.getPlayers().get(0).getLhorse().get(2);
+        for(Player p : GameBoard.getPlayers()){
+            Horse juan2 = p.getLhorse().get(0);
+            Tile tile = GameBoard.getTiles(p.getHomeTile());
+            tile.addHorse(juan2);
+            juan2.setAbsolutePosition(p.getHomeTile());
+            juan2.setRelativePosition(0);
+        }
 
-        Tile brazil = Gameboard.getCase(0);
-        brazil.addHorse(juan);
-        brazil.addHorse(juan2);
-        System.out.println(brazil);
-
-
-        System.out.println("###################\n");
-
-        for (Player kevin : Gameboard.getPlayers()) {
-            System.out.println(kevin);
-            Gameboard.turn(kevin);
+        for(int i = 0; i<11;i++){
+            for (Player kevin : GameBoard.getPlayers()) {
+                System.out.println(kevin);
+                GameBoard.turn(kevin);
+            }
         }
     }
 }

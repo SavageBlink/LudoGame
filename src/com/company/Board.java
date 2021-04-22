@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Board {
 
     private static final ArrayList<Player> players = generatePlayers();
-    public  static final ArrayList<Tile> tiles = generateCases();
+    public  static final ArrayList<Tile> tiles = generateTiles();
     private Dice d;
 
 
@@ -18,7 +18,7 @@ public class Board {
         this.d = new Dice(nbFaces);
     }
 
-    private static ArrayList<Tile> generateCases(){
+    private static ArrayList<Tile> generateTiles(){
         ArrayList<Tile> tiles = new ArrayList<>();
         for(int i = 0;i<52;i++){
             tiles.add(new Tile());
@@ -51,7 +51,7 @@ public class Board {
 
     public ArrayList<Player> getPlayers(){return players;}
 
-    public Tile getCase(int index){
+    public Tile getTiles(int index){
         if(index >= 0 && index < 52){
             return tiles.get(index);
         }else {
@@ -60,6 +60,15 @@ public class Board {
         }
     }
 
+    public Player getPlayer(Color color){
+        Player out = getPlayers().get(0);
+        switch (color){
+            case RED -> out = getPlayers().get(0);
+            case BLUE -> out = getPlayers().get(1);
+            case YELLOW -> out = getPlayers().get(2);
+            case GREEN -> out = getPlayers().get(3);
+        }return  out;
+    }
 
 
     //setter
@@ -124,20 +133,26 @@ public class Board {
     }
 
     public void moveHorse(Horse h, int dr) {
-        Tile currentTile = tiles.get(h.getAbsolutePosition());
+        if (h.getAbsolutePosition() == -1){ //Checking if the horse hasn't been out yet
+            int startingTileIndex = getPlayer(h.getColor()).getHomeTile();
+            Tile startingTile = getTiles(startingTileIndex);
+            startingTile.addHorse(h);
+            h.setRelativePosition(0);
+        }else { //Otherwise move it normaly
+            Tile currentTile = getTiles(h.getAbsolutePosition());
 
-        if(currentTile.getNumberOfHorseOfColor(h.getColor()) > 1){
-            translateBlock(h,dr);
-        }else{
-            translateHorse(h,dr);
+            if (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1) {
+                translateBlock(h, dr);
+            } else {
+                translateHorse(h, dr);
+            }
         }
-
 
     }
 
     public void turn(Player player) {
         System.out.println("It's "+ player.getColor() + " Turn");
-        int diceResult = 6;
+        int diceResult = getD().roll();
         System.out.println("You rolled a " + diceResult);
         ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
         System.out.println("Vous pouvez ainsi jouer :");
@@ -151,9 +166,10 @@ public class Board {
 
         Scanner sc = new Scanner(System.in);
 
-        String id = sc.nextLine();
+        String input = sc.nextLine();
+        int id = Integer.parseInt(input);
 
-        System.out.println(id);
+        moveHorse(playableHorse.get(id),diceResult);
 
         //TODO userSelection
 
