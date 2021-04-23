@@ -48,6 +48,7 @@ public class Player {
             for (Horse juan : this.getLhorse()){
                 if(juan.getAbsolutePosition() != 56){
                     this.finished = false;
+                    break;
                 }
             }
         }

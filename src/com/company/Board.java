@@ -181,9 +181,9 @@ public class Board {
         //if()
     }
 
-    public void Gameloop{
+    public void Gameloop(){
         ArrayList<Player> winOrder = new ArrayList<>();
-        while (winOrder.size() != 4){
+        while (winOrder.size() != 3){
             for (Player player : getPlayers()){
                 int dR = getD().getNbFaces();
                 while (dR == getD().getNbFaces() && !player.isFinished()){
