@@ -6,6 +6,7 @@ public class Player {
     private Color color;
     private final ArrayList<Horse> Lhorse = new ArrayList<>();
     private final int homeTile;
+    private boolean finished;
 
     public Player(Color color){
         this.color = color;
@@ -14,6 +15,7 @@ public class Player {
             Lhorse.add(current);
         }
         this.homeTile = identifyHomeTile(color);
+        this.finished = false;
     }
 
     //Getter
@@ -39,11 +41,23 @@ public class Player {
         }return result;
     }
 
+    //Check if the player has put all his Horse on it's finishing tile
+    public boolean isFinished(){
+        if (!this.finished){
+            this.finished = true;
+            for (Horse juan : this.getLhorse()){
+                if(juan.getAbsolutePosition() != 56){
+                    this.finished = false;
+                }
+            }
+        }
+        return this.finished;
+    }
+
     //Setter
     public void setColor(Color color) {
         this.color = color;
     }
-
     //Modifier
     public void moveHorse(Horse h, int steps){
         h.addStep(steps);

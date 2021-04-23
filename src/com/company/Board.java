@@ -151,9 +151,9 @@ public class Board {
 
     }
 
-    public void turn(Player player) {
+    public void turn(Player player,int dr) {
         System.out.println("It's "+ player.getColor() + " Turn");
-        int diceResult = 1;
+        int diceResult = getD().roll();
         System.out.println("You rolled a " + diceResult);
         ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
         System.out.println("Vous pouvez ainsi jouer :");
@@ -181,5 +181,31 @@ public class Board {
         //if()
     }
 
-    //public void Gameloop{return} //TODO
+    public void Gameloop{
+        ArrayList<Player> winOrder = new ArrayList<>();
+        while (winOrder.size() != 4){
+            for (Player player : getPlayers()){
+                int dR = getD().getNbFaces();
+                while (dR == getD().getNbFaces() && !player.isFinished()){
+                    dR = getD().roll();
+                    turn(player, dR);
+                }
+                if (!winOrder.contains(player) && player.isFinished()){
+                    winOrder.add(player);
+                }
+            }
+        }
+
+        System.out.println("The game is finshed here's the result : ");
+        for (Player p : winOrder){
+            System.out.println(p.getColor());
+        }
+
+
+
+
+
+
+    } //TODO
+
 }
