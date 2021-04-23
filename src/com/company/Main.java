@@ -33,11 +33,6 @@ public class Main {
         zeroTile.addHorse(redHorse);
 
 
-        for(int i = 0; i<11;i++){
-            for (Player kevin : GameBoard.getPlayers()) {
-                System.out.println(kevin);
-                GameBoard.turn(kevin);
-            }
-        }
+        GameBoard.gameLoop();
     }
 }

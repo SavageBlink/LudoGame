@@ -181,7 +181,7 @@ public class Board {
         //if()
     }
 
-    public void Gameloop(){
+    public void gameLoop(){
         ArrayList<Player> winOrder = new ArrayList<>();
         while (winOrder.size() != 3){
             for (Player player : getPlayers()){
