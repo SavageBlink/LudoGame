@@ -7,7 +7,12 @@ import java.util.Scanner;
 public class Board {
 
     private static final ArrayList<Player> players = generatePlayers();
-    public  static final ArrayList<Tile> tiles = generateTiles();
+    public static final ArrayList<Tile> tiles = generateTiles();
+    private static final ArrayList<Tile> redHomeTiles = generateHomeTiles();
+    private static final ArrayList<Tile> blueHomeTiles = generateHomeTiles();
+    private static final ArrayList<Tile> yellowHomeTiles = generateHomeTiles();
+    private static final ArrayList<Tile> greenHomeTiles = generateHomeTiles();
+
     private Dice d;
 
 
@@ -34,6 +39,15 @@ public class Board {
         tiles.get(47).setSafe(true);
 
         return tiles;
+    }
+
+    private static ArrayList<Tile> generateHomeTiles(){
+        ArrayList<Tile> homeTiles = new ArrayList<>();
+        for(int i = 0;i<6;i++){
+            homeTiles.add(new Tile());
+            homeTiles.get(i).setSafe(true);
+        }
+        return homeTiles;
     }
 
     private static ArrayList<Player> generatePlayers(){
@@ -70,6 +84,15 @@ public class Board {
         }return  out;
     }
 
+    public static ArrayList<Tile> getHomeTiles(Color color){
+        ArrayList<Tile> homeTiles = null;
+        switch (color){
+            case RED -> homeTiles = redHomeTiles;
+            case BLUE -> homeTiles = blueHomeTiles;
+            case GREEN -> homeTiles = greenHomeTiles;
+            case YELLOW -> homeTiles = yellowHomeTiles;
+        }return homeTiles;
+    }
 
     //setter
 
@@ -98,6 +121,16 @@ public class Board {
         }
         return result;
     }
+
+    public static boolean freePathEnd(Horse h, int dr){
+        int currentTileIndex = h.getRelativePosition() - 51;
+        Tile currentTile = getHomeTiles(h.getColor()).get(currentTileIndex);
+        int nextTilePos = ;
+        boolean result = true;
+
+
+    }
+
 
     public void translateBlock(Horse h,int dr){
         //Initialisation
@@ -133,7 +166,7 @@ public class Board {
 
     public void moveHorse(Horse h, int dr) {
         if (h.getAbsolutePosition() == -1){ //Checking if the horse hasn't been out yet
-            int startingTileIndex = getPlayer(h.getColor()).getHomeTile();
+            int startingTileIndex = getPlayer(h.getColor()).getStartingTile();
             Tile startingTile = getTiles(startingTileIndex);
             startingTile.addHorse(h);
             h.setAbsolutePosition(startingTileIndex);
@@ -199,10 +232,6 @@ public class Board {
         for (Player p : winOrder){
             System.out.println(p.getColor());
         }
-
-
-
-
 
 
     } //TODO

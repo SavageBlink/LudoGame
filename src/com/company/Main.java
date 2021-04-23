@@ -10,9 +10,9 @@ public class Main {
 
         for(Player p : GameBoard.getPlayers()){
             Horse juan2 = p.getLhorse().get(0);
-            Tile tile = GameBoard.getTiles(p.getHomeTile());
+            Tile tile = GameBoard.getTiles(p.getStartingTile());
             tile.addHorse(juan2);
-            juan2.setAbsolutePosition(p.getHomeTile());
+            juan2.setAbsolutePosition(p.getStartingTile());
             juan2.setRelativePosition(0);
         }
 

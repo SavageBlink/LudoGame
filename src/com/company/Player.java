@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Player {
     private Color color;
     private final ArrayList<Horse> Lhorse = new ArrayList<>();
-    private final int homeTile;
+    private final int startingTile;
     private boolean finished;
 
     public Player(Color color){
@@ -14,7 +14,7 @@ public class Player {
             Horse current = new Horse(this.color,-1,-1,i);
             Lhorse.add(current);
         }
-        this.homeTile = identifyHomeTile(color);
+        this.startingTile = identifyStartingTile(color);
         this.finished = false;
     }
 
@@ -28,13 +28,18 @@ public class Player {
         return Lhorse;
     }
 
-    public int getHomeTile() {
-        return homeTile;
+    public int getStartingTile() {
+        return startingTile;
     }
 
     public ArrayList<Horse> getPlayableHorses(Dice d, int dr){ //TODO BLOCK THINGGY
         ArrayList<Horse> result = new ArrayList<>();
         for (Horse h: this.getLhorse()){
+            if (h.getAbsolutePosition() >= 51 && Board.freePathEnd(h,dr)){
+
+            }
+
+
             if ( (h.getRelativePosition() == -1 && dr == d.getNbFaces()) || Board.freePath(h,dr)){
                 result.add(h);
             }
@@ -66,7 +71,7 @@ public class Player {
 
 
 
-    public static int identifyHomeTile(Color color) {
+    public static int identifyStartingTile(Color color) {
         int out = -1;
         switch (color){
             case RED -> out = 0;
@@ -81,7 +86,7 @@ public class Player {
     public String toString(){
         String output = "";
         output+= "This is the " + this.color + " Player\n";
-        output+= "It's home tile is " + this.homeTile + " Player\n";
+        output+= "It's home tile is " + this.startingTile + " Player\n";
         output+= "Here's a display of it's Horses : \n";
         for(Horse juan : this.Lhorse){
             output+= juan.toString();
