@@ -88,7 +88,6 @@ public class Board {
         Tile currentTile = tiles.get(h.getAbsolutePosition());
         int nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
         boolean result = true;
-        //TODO discuter du fix avec driss (SI jamais je dors en gros lorsque tu block mais un dr impair il pouvait se déplacer comme un block alors qu'il break)
         if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1 || (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1 && dr % 2 != 0)){
             for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
                 Tile temporaryTile = tiles.get(i);
