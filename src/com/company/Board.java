@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Board {
 
     private static final ArrayList<Player> players = generatePlayers();
-    public static final ArrayList<Tile> tiles = generateTiles();
+    private static final ArrayList<Tile> tiles = generateTiles();
     private static final ArrayList<Tile> redHomeTiles = generateHomeTiles();
     private static final ArrayList<Tile> blueHomeTiles = generateHomeTiles();
     private static final ArrayList<Tile> yellowHomeTiles = generateHomeTiles();
@@ -103,13 +103,18 @@ public class Board {
     //Game logic
 
 
-    public static boolean freePath(Horse h, int dr){
+    public static boolean freePath(Horse h, int dr, boolean mode){
         if (h.getAbsolutePosition() == -1){
             return  false;
         }
         //the block case is basically handled because according to the rules it can always move on a tile
         Tile currentTile = tiles.get(h.getAbsolutePosition());
-        int nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
+        int nextTilePos;
+        if (mode){
+            nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
+        }else{
+            nextTilePos = h.getAbsolutePosition() + (50 - h.getRelativePosition());
+        }
         boolean result = true;
         if(currentTile.getNumberOfHorseOfColor(h.getColor()) == 1 || (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1 && dr % 2 != 0)){
             for(int i = h.getAbsolutePosition()+1; i <= nextTilePos; i++){
@@ -122,39 +127,49 @@ public class Board {
         return result;
     }
 
-    public static boolean freePathEnd(Horse h, int dr){
-        int currentTileIndex = h.getRelativePosition() - 51;
-        Tile currentTile = getHomeTiles(h.getColor()).get(currentTileIndex);
-        int nextTilePos = ;
-        boolean result = true;
 
-
-    }
-
-
-    public void translateBlock(Horse h,int dr){
+    public void translateBlock(Horse h,int dr,boolean mode){
         //Initialisation
-        Tile currentTile = getTiles(h.getAbsolutePosition());
-
+        Tile currentTile;
+        if (mode) {
+            currentTile = getTiles(h.getAbsolutePosition());
+        }else{
+            ArrayList<Tile> homeTiles = getHomeTiles(h.getColor());
+            currentTile = (h.getAbsolutePosition() != 999) ? tiles.get(h.getAbsolutePosition()) : homeTiles.get(h.getRelativePosition()-51);
+        }
         int modDr = (dr % 2 == 0) ? dr / 2 : dr;
-        this.translateHorse(h,modDr);
+        this.translateHorse(h,modDr,mode);
         if(dr % 2 == 0){
             for (Horse tempHorse : currentTile.getContent()){
                 if(tempHorse.getColor() == h.getColor()){
-                    this.translateHorse(tempHorse,modDr);
+                    this.translateHorse(tempHorse,modDr,mode);
                     break;
                 }
             }
         }
     }
 
-    public void translateHorse(Horse h,int dr){
-        Tile currentTile = getTiles(h.getAbsolutePosition());
+    public void translateHorse(Horse h,int dr, boolean mode){
+        //Initializing variable
         int nextTilePos;
+        Tile currentTile;
         Tile nextTile;
 
-        nextTilePos = (h.getAbsolutePosition() + dr < 52 ) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
-        nextTile = getTiles(nextTilePos);
+        //Fixe an issue where a block with even dr will be having mode as true while going on homeTiles
+        if (!mode && h.getRelativePosition() + dr - 51 < 0){mode = true;}
+
+        if(mode) { //normal movement
+            currentTile = getTiles(h.getAbsolutePosition());
+
+            nextTilePos = (h.getAbsolutePosition() + dr < 52) ? h.getAbsolutePosition() + dr : h.getAbsolutePosition() + dr - 52;
+            nextTile = getTiles(nextTilePos);
+        }else{ //Home movement
+            ArrayList<Tile> homeTiles = getHomeTiles(h.getColor());
+            currentTile = (h.getAbsolutePosition() != 999) ? tiles.get(h.getAbsolutePosition()) : homeTiles.get(h.getRelativePosition()-51);
+            nextTilePos = h.getRelativePosition() + dr - 51;
+            nextTile = homeTiles.get(nextTilePos);
+            nextTilePos = 999;
+        }
 
         nextTile.addHorse(h);
         currentTile.yeetHorse(h);
@@ -164,20 +179,49 @@ public class Board {
         nextTile.clearContent(h.getColor());
     }
 
+
+    /*public void translateHorseHome(Horse h,int dr){
+        ArrayList<Tile> homeTiles = getHomeTiles(h.getColor());
+        Tile currentTile = (h.getAbsolutePosition() != 999) ? tiles.get(h.getAbsolutePosition()) : homeTiles.get(h.getRelativePosition()-51);
+
+        int nextIndex = h.getRelativePosition() + dr - 51;
+        Tile nextTile = homeTiles.get(nextIndex);
+
+        nextTile.addHorse(h);
+        currentTile.yeetHorse(h);
+        h.addStep(dr);
+        h.setAbsolutePosition(999);
+    }
+    */
+
+
     public void moveHorse(Horse h, int dr) {
-        if (h.getAbsolutePosition() == -1){ //Checking if the horse hasn't been out yet
+        if (h.getAbsolutePosition() == -1) { //Checking if the horse hasn't been out yet
             int startingTileIndex = getPlayer(h.getColor()).getStartingTile();
             Tile startingTile = getTiles(startingTileIndex);
             startingTile.addHorse(h);
             h.setAbsolutePosition(startingTileIndex);
             h.setRelativePosition(0);
+
+
+        }else if(h.getRelativePosition() + dr >= 51) { //On Home or going to be on home
+
+            ArrayList<Tile> homeTiles = getHomeTiles(h.getColor());
+            Tile currentTile = (h.getAbsolutePosition() != 999) ? tiles.get(h.getAbsolutePosition()) : homeTiles.get(h.getRelativePosition()-51);
+            if (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1) {
+                translateBlock(h, dr,false);
+            } else {
+                translateHorse(h, dr,false);
+            }
+
+
         }else { //Otherwise move it normally
             Tile currentTile = getTiles(h.getAbsolutePosition());
 
             if (currentTile.getNumberOfHorseOfColor(h.getColor()) > 1) {
-                translateBlock(h, dr);
+                translateBlock(h, dr,true);
             } else {
-                translateHorse(h, dr);
+                translateHorse(h, dr,true);
             }
         }
 
@@ -185,9 +229,8 @@ public class Board {
 
     public void turn(Player player,int dr) {
         System.out.println("It's "+ player.getColor() + " Turn");
-        int diceResult = getD().roll();
-        System.out.println("You rolled a " + diceResult);
-        ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,diceResult);
+        System.out.println("You rolled a " + dr);
+        ArrayList <Horse> playableHorse = player.getPlayableHorses(this.d,dr);
         System.out.println("Vous pouvez ainsi jouer :");
 
 
@@ -204,7 +247,7 @@ public class Board {
             String input = sc.nextLine();
             int id = Integer.parseInt(input);
 
-            moveHorse(playableHorse.get(id), diceResult);
+            moveHorse(playableHorse.get(id), dr);
         }else{
             System.out.println("You have no horse to move, passing turn");
         }
@@ -219,7 +262,7 @@ public class Board {
             for (Player player : getPlayers()){
                 int dR = getD().getNbFaces();
                 while (dR == getD().getNbFaces() && !player.isFinished()){
-                    dR = getD().roll();
+                    dR = 5; //getD().roll();
                     turn(player, dR);
                 }
                 if (!winOrder.contains(player) && player.isFinished()){

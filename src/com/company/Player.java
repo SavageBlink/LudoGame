@@ -32,16 +32,19 @@ public class Player {
         return startingTile;
     }
 
-    public ArrayList<Horse> getPlayableHorses(Dice d, int dr){ //TODO BLOCK THINGGY
+    public ArrayList<Horse> getPlayableHorses(Dice d, int dr){
         ArrayList<Horse> result = new ArrayList<>();
         for (Horse h: this.getLhorse()){
-            if (h.getAbsolutePosition() >= 51 && Board.freePathEnd(h,dr)){
-
-            }
-
-
-            if ( (h.getRelativePosition() == -1 && dr == d.getNbFaces()) || Board.freePath(h,dr)){
-                result.add(h);
+            if (h.getRelativePosition() != 56) {
+                if (h.getRelativePosition() >= 51) {
+                    if (h.getRelativePosition() + dr < 57) {
+                        result.add(h);
+                    }
+                } else if (h.getRelativePosition() + dr >= 51 && Board.freePath(h, dr, false)) {
+                    result.add(h);
+                } else if ((h.getRelativePosition() == -1 && dr == d.getNbFaces()) || (Board.freePath(h, dr, true) && h.getRelativePosition() + dr < 51)) {
+                    result.add(h);
+                }
             }
         }return result;
     }

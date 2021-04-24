@@ -7,31 +7,24 @@ public class Main {
     public static void main(String[] args) {
         Board GameBoard = new Board(6);
 
+        Player red = GameBoard.getPlayer(Color.RED);
+        Player blue = GameBoard.getPlayer(Color.BLUE);
 
-        for(Player p : GameBoard.getPlayers()){
-            Horse juan2 = p.getLhorse().get(0);
-            Tile tile = GameBoard.getTiles(p.getStartingTile());
-            tile.addHorse(juan2);
-            juan2.setAbsolutePosition(p.getStartingTile());
-            juan2.setRelativePosition(0);
-        }
+        blue.getLhorse().get(0).setRelativePosition(37);
+        blue.getLhorse().get(0).setAbsolutePosition(50);
+        GameBoard.getTiles(50).addHorse(blue.getLhorse().get(0));
 
-        Player blocker = GameBoard.getPlayer(Color.BLUE);
-        Player redPlayer = GameBoard.getPlayer(Color.RED);
-        Horse juan1 = blocker.getLhorse().get(0);
-        Horse juan2 = blocker.getLhorse().get(1);
-        Horse redHorse = redPlayer.getLhorse().get(1);
-        Tile blockTile = GameBoard.getTiles(1);
-        Tile zeroTile = GameBoard.getTiles(0);
+        blue.getLhorse().get(1).setRelativePosition(37);
+        blue.getLhorse().get(1).setAbsolutePosition(50);
+        GameBoard.getTiles(50).addHorse(blue.getLhorse().get(1));
 
-        redHorse.setAbsolutePosition(0);
-        redHorse.setRelativePosition(0);
-        juan1.setAbsolutePosition(1);
-        juan2.setAbsolutePosition(1);
-        blockTile.addHorse(juan1);
-        blockTile.addHorse(juan2);
-        zeroTile.addHorse(redHorse);
+        red.getLhorse().get(0).setAbsolutePosition(47);
+        red.getLhorse().get(0).setRelativePosition(47);
+        GameBoard.getTiles(47).addHorse(red.getLhorse().get(0));
 
+        red.getLhorse().get(1).setAbsolutePosition(47);
+        red.getLhorse().get(1).setRelativePosition(47);
+        GameBoard.getTiles(47).addHorse(red.getLhorse().get(1));
 
         GameBoard.gameLoop();
     }

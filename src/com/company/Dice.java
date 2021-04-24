@@ -12,7 +12,7 @@ public class Dice {
     }
 
     public int getNbFaces() {
-        return nbFaces;
+        return this.nbFaces;
     }
 
     public void setNbFaces(int nbFaces) {
