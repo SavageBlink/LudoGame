@@ -242,12 +242,26 @@ public class Board {
                 System.out.println(h.toString());
                 n++;
             }
-            Scanner sc = new Scanner(System.in);
+            Horse desiredHorse;
+            if(player.getColor() == Color.RED){
 
-            String input = sc.nextLine();
-            int id = Integer.parseInt(input);
+                Scanner sc = new Scanner(System.in);
 
-            moveHorse(playableHorse.get(id), dr);
+                String input = sc.nextLine();
+                int id = Integer.parseInt(input);
+                desiredHorse = playableHorse.get(id);
+
+            }else{
+                desiredHorse = Bot.botPlay(playableHorse);
+                System.out.println("Bot " + player.getColor());
+                System.out.println("He played :");
+                System.out.println(desiredHorse);
+                System.out.println("press enter to continue");
+                Scanner sc = new Scanner(System.in);
+                sc.nextLine();
+            }
+
+            moveHorse(desiredHorse, dr);
         }else{
             System.out.println("You have no horse to move, passing turn");
         }
@@ -262,7 +276,7 @@ public class Board {
             for (Player player : getPlayers()){
                 int dR = getD().getNbFaces();
                 while (dR == getD().getNbFaces() && !player.isFinished()){
-                    dR = 5; //getD().roll();
+                    dR = getD().roll();
                     turn(player, dR);
                 }
                 if (!winOrder.contains(player) && player.isFinished()){
